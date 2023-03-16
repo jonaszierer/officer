@@ -124,7 +124,7 @@ body_add_docx <- function(x, src, pos = "after") {
 #'   print(doc, target = tempfile(fileext = ".docx"))
 #' }
 #' @family functions for adding content
-#' @importFrom ragg agg_png
+#' @importFrom ragg CairoPNG
 body_add_gg <- function(x, value, width = 6, height = 5, res = 300, style = "Normal", scale = 1, pos = "after", ...) {
   if (!requireNamespace("ggplot2")) {
     stop("package ggplot2 is required to use this function")
@@ -132,7 +132,7 @@ body_add_gg <- function(x, value, width = 6, height = 5, res = 300, style = "Nor
 
   stopifnot(inherits(value, "gg"))
   file <- tempfile(fileext = ".png")
-  agg_png(filename = file, width = width, height = height, scaling = scale, units = "in", res = res, background = "transparent", ...)
+  CairoPNG(filename = file, width = width, height = height, scaling = scale, units = "in", res = res, background = "transparent", ...)
   print(value)
   dev.off()
   on.exit(unlink(file))
@@ -379,7 +379,7 @@ body_add_toc <- function(x, level = 3, pos = "after", style = NULL, separator = 
 #' @family functions for adding content
 body_add_plot <- function(x, value, width = 6, height = 5, res = 300, style = "Normal", pos = "after", ...) {
   file <- tempfile(fileext = ".png")
-  agg_png(filename = file, width = width, height = height, units = "in", res = res, background = "transparent", ...)
+  CairoPNG(filename = file, width = width, height = height, units = "in", res = res, background = "transparent", ...)
   tryCatch(
     {
       eval(value$code)
@@ -813,7 +813,7 @@ body_add.gg <- function(x, value, width = 6, height = 5, res = 300, style = "Nor
   }
 
   file <- tempfile(fileext = ".png")
-  agg_png(filename = file, width = width, height = height, units = "in", res = res, scaling = scale, background = "transparent", ...)
+  CairoPNG(filename = file, width = width, height = height, units = "in", res = res, scaling = scale, background = "transparent", ...)
   print(value)
   dev.off()
   on.exit(unlink(file))
@@ -826,7 +826,7 @@ body_add.gg <- function(x, value, width = 6, height = 5, res = 300, style = "Nor
 #' @describeIn body_add add a base plot with a [plot_instr] object.
 body_add.plot_instr <- function(x, value, width = 6, height = 5, res = 300, style = "Normal", ...) {
   file <- tempfile(fileext = ".png")
-  agg_png(filename = file, width = width, height = height, units = "in", res = res, scaling = 1, background = "transparent", ...)
+  CairoPNG(filename = file, width = width, height = height, units = "in", res = res, scaling = 1, background = "transparent", ...)
   tryCatch(
     {
       eval(value$code)
